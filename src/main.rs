@@ -34,11 +34,12 @@ struct Objects {
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> () {
-    env_logger::Builder::from_default_env().init();
+    env_logger::Builder::from_env(env_logger::Env::default().filter_or("RUST_LOG", "info")).init();
 
     let args = Arguments::parse();
 
     let url = Url::parse(&args.uri).expect("valid delta table url");
+    log::info!("table: {}", url);
     assert!(url.path().chars().last() == Some('/'), "path must end with /");
 
     let mut table = DeltaTableBuilder::from_uri(url.to_string())
@@ -69,7 +70,7 @@ async fn main() -> () {
             "--bucket", url.host_str().unwrap(),
             "--delete", &keys_json
         ];
-        log::debug!("aws args: {:?}", args);
+        log::trace!("aws args: {:?}", args);
         let mut child = Command::new("aws")
             .args(args).spawn().unwrap();
             let exit_code = child.wait();
