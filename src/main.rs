@@ -57,7 +57,6 @@ async fn main() -> () {
 
     rayon::ThreadPoolBuilder::new().num_threads(args.parallelism).build_global().unwrap();
     files_to_delete.par_chunks(args.chunk_size).for_each(|chunk| {
-        log::info!("chunk: {:?}", chunk);
         let objects = chunk.iter().map(
             |path| Key {
                 Key: format!("{}{}", &url.path()[1..], path)
