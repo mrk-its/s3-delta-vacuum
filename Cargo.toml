@@ -6,7 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-deltalake = {git="https://github.com/delta-io/delta-rs.git", features=["s3-rustls"]}
+deltalake = {git="https://github.com/mrk-its/delta-rs.git", branch="vacuum", features=["s3-rustls"]}
 tokio = { version = "1", features = ["macros", "rt"] }
 maplit = "1"
 env_logger = "0"
@@ -19,3 +19,6 @@ rayon = "1"
 
 [patch.crates-io]
 object_store = {git = "https://github.com/mrk-its/arrow-rs"}
+
+#[patch."https://github.com/delta-io/delta-rs.git"]
+#deltalake = {path = "../delta-rs/rust"}

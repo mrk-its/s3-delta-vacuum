@@ -440,7 +440,7 @@ dependencies = [
 [[package]]
 name = "deltalake"
 version = "0.4.1"
-source = "git+https://github.com/delta-io/delta-rs.git#760b30aa29f632ad108629febe74bb880fde6d5c"
+source = "git+https://github.com/mrk-its/delta-rs.git?branch=vacuum#338ef43d9b7963da096ee46a03701825a4b95a3d"
 dependencies = [
  "arrow",
  "async-trait",
@@ -513,7 +513,7 @@ checksum = "fea41bba32d969b513997752735605054bc0dfa92b4c56bf1189f2e174be7a10"
 [[package]]
 name = "dynamodb_lock"
 version = "0.4.1"
-source = "git+https://github.com/delta-io/delta-rs.git#760b30aa29f632ad108629febe74bb880fde6d5c"
+source = "git+https://github.com/mrk-its/delta-rs.git?branch=vacuum#338ef43d9b7963da096ee46a03701825a4b95a3d"
 dependencies = [
  "async-trait",
  "log",
@@ -1262,7 +1262,7 @@ dependencies = [
 [[package]]
 name = "object_store"
 version = "0.5.1"
-source = "git+https://github.com/mrk-its/arrow-rs#340866a4d034703533497388d6335e1c6127c6b6"
+source = "git+https://github.com/mrk-its/arrow-rs#dd8cc41151e4f6cdb45a4925ef758be70d1effb6"
 dependencies = [
  "async-trait",
  "base64",

@@ -15,7 +15,9 @@ struct Arguments {
     #[clap(default_value_t=false, short, long)]
     dry_run: bool,
     #[clap(default_value_t=8, short, long)]
-    parallelism: usize
+    parallelism: usize,
+    #[clap(default_value_t=168, short, long)]
+    retention_period_hours: u64,
 }
 
 #[allow(non_snake_case)]
@@ -45,7 +47,7 @@ async fn main() -> () {
             // s3_storage_options::AWS_S3_LOCKING_PROVIDER.to_string() => "none".to_string(),
         })
         .load().await.unwrap();
-    let files_to_delete = table.vacuum(Some(0), true, false).await.unwrap();
+    let files_to_delete = table.vacuum(Some(args.retention_period_hours), true, false).await.unwrap();
 
     if args.dry_run {
         println!("files to delete: {}", files_to_delete.len());
