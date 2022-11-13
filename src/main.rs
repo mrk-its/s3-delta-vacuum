@@ -10,7 +10,7 @@ use rayon::prelude::*;
 #[derive(Parser)]
 struct Arguments {
     uri: String,
-    #[clap(default_value_t=4, short, long)]
+    #[clap(default_value_t=250, short, long)]
     chunk_size: usize,
     #[clap(default_value_t=false, short, long)]
     dry_run: bool,
