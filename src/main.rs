@@ -49,8 +49,9 @@ async fn main() -> () {
         .load().await.unwrap();
     let files_to_delete = table.vacuum(Some(args.retention_period_hours), true, false).await.unwrap();
 
+    log::info!("files to delete: {}", files_to_delete.len());
+    
     if args.dry_run {
-        println!("files to delete: {}", files_to_delete.len());
         println!("{}", files_to_delete.join("\n"));
         return;
     }
@@ -72,6 +73,6 @@ async fn main() -> () {
         let mut child = Command::new("aws")
             .args(args).spawn().unwrap();
             let exit_code = child.wait();
-        println!("ret: {:?}", exit_code);
+        log::debug!("exit_code: {:?}", exit_code);
     });
 }
