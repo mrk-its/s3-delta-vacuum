@@ -29,6 +29,7 @@ struct Key {
 #[derive(Serialize)]
 struct Objects {
     Objects: Vec<Key>,
+    Quiet: bool,
 }
 
 #[tokio::main(flavor = "current_thread")]
@@ -38,8 +39,7 @@ async fn main() -> () {
     let args = Arguments::parse();
 
     let url = Url::parse(&args.uri).expect("valid delta table url");
-
-    log::info!("uri: {:?}", url);
+    assert!(url.path().chars().last() == Some('/'), "path must end with /");
 
     let mut table = DeltaTableBuilder::from_uri(url.to_string())
         .with_storage_options(hashmap!{
@@ -62,14 +62,15 @@ async fn main() -> () {
                 Key: format!("{}{}", &url.path()[1..], path)
             }
         ).collect::<Vec<_>>();
-        let keys_json = to_string(&Objects{Objects: objects}).unwrap();
-        println!("{}", keys_json);
+        let keys_json = to_string(&Objects{Objects: objects, Quiet: true}).unwrap();
+        let args = [
+            "s3api", "delete-objects",
+            "--bucket", url.host_str().unwrap(),
+            "--delete", &keys_json
+        ];
+        log::debug!("aws args: {:?}", args);
         let mut child = Command::new("aws")
-            .args([
-                "s3api", "delete-objects",
-                "--bucket", url.host_str().unwrap(),
-                "--delete", &keys_json
-            ]).spawn().unwrap();
+            .args(args).spawn().unwrap();
             let exit_code = child.wait();
         println!("ret: {:?}", exit_code);
     });
